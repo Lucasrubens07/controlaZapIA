@@ -1,0 +1,147 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ControlaZap Design System - Financial Management */
+
+@layer base {
+  :root {
+    /* Core Colors */
+    --background: 0 0% 100%;
+    --foreground: 142 100% 5%;
+    
+    /* Card System */
+    --card: 0 0% 100%;
+    --card-foreground: 142 100% 5%;
+    
+    /* Interactive Elements */
+    --popover: 0 0% 100%;
+    --popover-foreground: 142 100% 5%;
+    
+    /* Brand Colors - Verde ControlaZap */
+    --primary: 142 76% 36%;        /* #16A34A */
+    --primary-light: 142 76% 45%;  /* Lighter green */
+    --primary-dark: 142 76% 28%;   /* Darker green */
+    --primary-foreground: 0 0% 98%;
+    
+    /* Secondary Colors */
+    --secondary: 142 10% 96%;
+    --secondary-foreground: 142 76% 36%;
+    
+    /* Success & Status */
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 98%;
+    --warning: 43 96% 56%;
+    --warning-foreground: 0 0% 98%;
+    --danger: 0 84% 60%;
+    --danger-foreground: 0 0% 98%;
+    
+    /* Neutral System */
+    --muted: 142 10% 96%;
+    --muted-foreground: 142 10% 45%;
+    --accent: 142 15% 94%;
+    --accent-foreground: 142 76% 36%;
+    
+    /* Form Elements */
+    --border: 142 15% 88%;
+    --input: 142 15% 88%;
+    --ring: 142 76% 36%;
+    
+    /* Destructive */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    
+    /* Layout */
+    --radius: 0.75rem;
+
+    /* Sidebar */
+    --sidebar-background: 142 15% 98%;
+    --sidebar-foreground: 142 100% 5%;
+    --sidebar-primary: 142 76% 36%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 142 15% 94%;
+    --sidebar-accent-foreground: 142 76% 36%;
+    --sidebar-border: 142 15% 88%;
+    --sidebar-ring: 142 76% 36%;
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-light)));
+    --gradient-success: linear-gradient(135deg, hsl(var(--success)), hsl(142 76% 50%));
+    --gradient-subtle: linear-gradient(180deg, hsl(var(--background)), hsl(var(--muted)));
+    
+    /* Shadows */
+    --shadow-soft: 0 2px 8px hsl(var(--primary) / 0.08);
+    --shadow-medium: 0 4px 16px hsl(var(--primary) / 0.12);
+    --shadow-strong: 0 8px 32px hsl(var(--primary) / 0.16);
+    
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .dark {
+    /* Core Colors */
+    --background: 142 100% 3%;
+    --foreground: 142 10% 95%;
+    
+    /* Card System */
+    --card: 142 50% 6%;
+    --card-foreground: 142 10% 95%;
+    
+    /* Interactive */
+    --popover: 142 50% 6%;
+    --popover-foreground: 142 10% 95%;
+    
+    /* Brand Colors - Dark Mode */
+    --primary: 142 76% 50%;
+    --primary-light: 142 76% 60%;
+    --primary-dark: 142 76% 40%;
+    --primary-foreground: 142 100% 3%;
+    
+    /* Secondary */
+    --secondary: 142 20% 12%;
+    --secondary-foreground: 142 76% 50%;
+    
+    /* Status */
+    --success: 142 76% 50%;
+    --success-foreground: 142 100% 3%;
+    --warning: 43 96% 56%;
+    --warning-foreground: 142 100% 3%;
+    --danger: 0 84% 60%;
+    --danger-foreground: 142 100% 3%;
+    
+    /* Neutrals */
+    --muted: 142 20% 12%;
+    --muted-foreground: 142 10% 65%;
+    --accent: 142 25% 15%;
+    --accent-foreground: 142 76% 50%;
+    
+    /* Forms */
+    --border: 142 25% 20%;
+    --input: 142 25% 20%;
+    --ring: 142 76% 50%;
+    
+    /* Destructive */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 142 10% 95%;
+    
+    /* Sidebar Dark */
+    --sidebar-background: 142 50% 4%;
+    --sidebar-foreground: 142 10% 95%;
+    --sidebar-primary: 142 76% 50%;
+    --sidebar-primary-foreground: 142 100% 3%;
+    --sidebar-accent: 142 25% 8%;
+    --sidebar-accent-foreground: 142 76% 50%;
+    --sidebar-border: 142 25% 15%;
+    --sidebar-ring: 142 76% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
