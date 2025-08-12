@@ -93,10 +93,11 @@ export default function Dashboard() {
 
       // Fetch paralelo de transações e resumo por categoria
       const [transactionsResponse, categoryResponse] = await Promise.all([
-        http.get(`/gastos?${params.toString()}&page=${page}&limit=${perPage}`),
+        http.get(`/gastos?${params.toString()}`),
         http.get(`/gastos/categorias/resumo?${params.toString()}`),
       ]);
 
+      // Extrair dados da nova estrutura de resposta
       const transactionsData = transactionsResponse.data?.data || [];
       const categoryDataResponse = categoryResponse.data?.data || [];
 
@@ -158,16 +159,21 @@ export default function Dashboard() {
 
   const handleDeleteTransaction = async (id: number) => {
     try {
-      await http.delete(`/gastos/${id}`);
-      toast({
-        title: 'Transação excluída',
-        description: 'A transação foi removida com sucesso.',
-      });
-      fetchData();
-    } catch (error) {
+      const response = await http.delete(`/gastos/${id}`);
+      
+      if (response.data?.success) {
+        toast({
+          title: 'Transação excluída',
+          description: response.data.message || 'A transação foi removida com sucesso.',
+        });
+        fetchData();
+      } else {
+        throw new Error(response.data?.message || 'Erro ao excluir transação');
+      }
+    } catch (error: any) {
       toast({
         title: 'Erro ao excluir',
-        description: 'Não foi possível excluir a transação.',
+        description: error.message || 'Não foi possível excluir a transação.',
         variant: 'destructive',
       });
     }
@@ -181,34 +187,46 @@ export default function Dashboard() {
   }) => {
     setFormLoading(true);
     try {
+      let response;
+      
       if (formMode === 'create') {
-        await http.post('/gastos', {
+        response = await http.post('/gastos', {
           valor: payload.valor,
           categoria: payload.categoria,
           data: payload.data,
         });
-        toast({
-          title: 'Transação criada',
-          description: 'Nova transação adicionada com sucesso.',
-        });
+        
+        if (response.data?.success) {
+          toast({
+            title: 'Transação criada',
+            description: response.data.message || 'Nova transação adicionada com sucesso.',
+          });
+        } else {
+          throw new Error(response.data?.message || 'Erro ao criar transação');
+        }
       } else {
-        await http.put(`/gastos/${payload.id}`, {
+        response = await http.put(`/gastos/${payload.id}`, {
           valor: payload.valor,
           categoria: payload.categoria,
           data: payload.data,
         });
-        toast({
-          title: 'Transação atualizada',
-          description: 'As alterações foram salvas com sucesso.',
-        });
+        
+        if (response.data?.success) {
+          toast({
+            title: 'Transação atualizada',
+            description: response.data.message || 'As alterações foram salvas com sucesso.',
+          });
+        } else {
+          throw new Error(response.data?.message || 'Erro ao atualizar transação');
+        }
       }
       
       fetchData();
       setFormOpen(false);
-    } catch (error) {
+    } catch (error: any) {
       toast({
         title: 'Erro ao salvar',
-        description: 'Não foi possível salvar a transação.',
+        description: error.message || 'Não foi possível salvar a transação.',
         variant: 'destructive',
       });
     } finally {
