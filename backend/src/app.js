@@ -4,6 +4,7 @@ require('dotenv').config();
 
 const gastosRoutes = require('./routes/gastos.routes');
 const authRoutes = require('./routes/auth.routes');
+const usuariosRoutes = require('./routes/usuarios.routes');
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use((req, res, next) => {
 // Rotas
 app.use('/auth', authRoutes);
 app.use('/gastos', gastosRoutes);
+app.use('/usuarios', usuariosRoutes);
 
 // Rota de health check
 app.get('/health', (req, res) => {

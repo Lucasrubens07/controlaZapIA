@@ -9,7 +9,7 @@ async function getGastos(req, res) {
       sort: req.query.sort,           // ex: data_desc, valor_asc
     };
     
-    const dados = await Gasto.listarGastos(filtros);
+    const dados = await Gasto.listarGastos(filtros, req.user.id);
     res.json({
       success: true,
       data: dados,
@@ -33,7 +33,7 @@ async function getResumo(req, res) {
       inicio: req.query.inicio,
       fim: req.query.fim,
     };
-    const dados = await Gasto.resumoPorCategoria(filtros);
+    const dados = await Gasto.resumoPorCategoria(filtros, req.user.id);
     res.json({
       success: true,
       data: dados,
@@ -57,7 +57,7 @@ async function getGastosDeUmaCategoria(req, res) {
       fim: req.query.fim,
       sort: req.query.sort,
     };
-    const dados = await Gasto.listarGastos(filtros);
+    const dados = await Gasto.listarGastos(filtros, req.user.id);
     res.json({
       success: true,
       data: dados,
@@ -76,7 +76,7 @@ async function getGastosDeUmaCategoria(req, res) {
 
 async function postGasto(req, res) {
   try {
-    const { valor, categoria, data } = req.body;
+    const { valor, categoria, data, descricao, tipo = 'despesa' } = req.body;
     
     // Validação dos campos obrigatórios
     if (valor == null || valor === undefined) {
@@ -103,7 +103,7 @@ async function postGasto(req, res) {
       });
     }
 
-    const novo = await Gasto.criarGasto(valor, categoria, data);
+    const novo = await Gasto.criarGasto(valor, categoria, data, req.user.id, descricao, tipo);
     res.status(201).json({
       success: true,
       data: novo,
@@ -133,7 +133,7 @@ async function postGasto(req, res) {
 async function putGasto(req, res) {
   try {
     const { id } = req.params;
-    const { valor, categoria, data } = req.body;
+    const { valor, categoria, data, descricao, tipo = 'despesa' } = req.body;
     
     // Validação do ID
     if (!id || isNaN(id) || id <= 0) {
@@ -144,7 +144,7 @@ async function putGasto(req, res) {
       });
     }
     
-    const up = await Gasto.atualizarGasto(id, valor, categoria, data);
+    const up = await Gasto.atualizarGasto(id, valor, categoria, data, req.user.id, descricao, tipo);
     res.json({
       success: true,
       data: up,
@@ -192,7 +192,7 @@ async function deleteGasto(req, res) {
       });
     }
     
-    const del = await Gasto.deletarGasto(id);
+    const del = await Gasto.deletarGasto(id, req.user.id);
     res.json({ 
       success: true,
       data: del,
@@ -217,11 +217,48 @@ async function deleteGasto(req, res) {
   }
 }
 
+async function getGastosPaginado(req, res) {
+  try {
+    const pagina = Number(req.query.pagina || 1);
+    const limite = Number(req.query.limite || 20);
+
+    const filtros = {
+      categoria: req.query.categoria,
+      inicio: req.query.inicio,
+      fim: req.query.fim,
+      sort: req.query.sort,
+      pagina,
+      limite,
+    };
+
+    const data = await Gasto.listarGastosPaginado(filtros, req.user.id);
+    res.json(data); // { itens, pagina, limite, total }
+  } catch (e) {
+    res.status(500).json({ error: 'Erro ao listar gastos paginados' });
+  }
+}
+
+// GET /gastos/estatisticas?inicio=&fim=&categoria=
+async function getEstatisticas(req, res) {
+  try {
+    const data = await Gasto.estatisticasPeriodo({
+      inicio: req.query.inicio,
+      fim: req.query.fim,
+      categoria: req.query.categoria,
+    }, req.user.id);
+    res.json(data); // { totalGasto, totalRegistros }
+  } catch (e) {
+    res.status(500).json({ error: 'Erro ao obter estatísticas' });
+  }
+}
+
 module.exports = {
   getGastos,
   getResumo,
   postGasto,
   putGasto,
   deleteGasto,
-  getGastosDeUmaCategoria, 
+  getGastosDeUmaCategoria,
+  getGastosPaginado,
+  getEstatisticas,
 };

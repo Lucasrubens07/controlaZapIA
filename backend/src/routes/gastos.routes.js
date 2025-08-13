@@ -1,24 +1,21 @@
 const express = require('express');
 const router = express.Router();
-const {
-  getGastos,
-  getResumo,
-  postGasto,
-  putGasto,
-  deleteGasto,
-  getGastosDeUmaCategoria,
-} = require('../controllers/gastos.controller');
+const gastosController = require('../controllers/gastos.controller');
+const authMiddleware = require('../middleware/auth');
 
-router.get('/', getGastos);
+// Aplicar middleware de autenticação em todas as rotas
+router.use(authMiddleware);
 
-// ✅ mantém o resumo no caminho que você queria
-router.get('/categorias/resumo', getResumo);
+// Rotas de gastos
+router.get('/', gastosController.getGastos);
+router.get('/paginado', gastosController.getGastosPaginado);
+router.get('/categorias/resumo', gastosController.getResumo);
+router.get('/estatisticas', gastosController.getEstatisticas);
+router.get('/categoria/:categoria', gastosController.getGastosDeUmaCategoria);
 
-// ✅ listagem individual por categoria (case-insensitive + parcial via model)
-router.get('/categorias/:categoria', getGastosDeUmaCategoria);
-
-router.post('/', postGasto);
-router.put('/:id', putGasto);
-router.delete('/:id', deleteGasto);
+// CRUD de gastos
+router.post('/', gastosController.postGasto);
+router.put('/:id', gastosController.putGasto);
+router.delete('/:id', gastosController.deleteGasto);
 
 module.exports = router;

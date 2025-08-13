@@ -6,8 +6,10 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AppLayout } from "./components/layout/AppLayout";
 import { useAuthStore } from "./stores/authStore";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Categories from "./pages/Categories";
+import Configuracoes from "./pages/Configuracoes";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,6 +29,7 @@ const App = () => (
         <Routes>
           {/* Rotas públicas */}
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           
           {/* Rotas protegidas */}
           <Route path="/" element={<Navigate to="/dashboard" />} />
@@ -59,7 +62,7 @@ const App = () => (
           } />
           <Route path="/configuracoes" element={
             <ProtectedRoute>
-              <div className="p-6"><h1 className="text-2xl font-bold">Configurações - Em desenvolvimento</h1></div>
+              <Configuracoes />
             </ProtectedRoute>
           } />
           

@@ -158,7 +158,7 @@ export default function Login() {
               <p className="text-sm text-muted-foreground">
                 Não tem uma conta?{' '}
                 <Link
-                  to="/cadastro"
+                  to="/register"
                   className="text-primary hover:text-primary-dark font-medium transition-smooth"
                 >
                   Criar conta

@@ -1,225 +1,268 @@
-# ControlaZap IA - Sistema de Controle Financeiro
+# ControlaZap - Sistema de Controle Financeiro
 
-Sistema completo de controle financeiro com backend Node.js/Express e frontend React/TypeScript.
+Uma plataforma completa de controle financeiro com integração WhatsApp via n8n, desenvolvida para ser comercializada como SaaS multiusuário.
 
-## 🚀 Estrutura do Projeto
+## 🚀 Funcionalidades
 
-```
-controlaZapIa/
-├── backend/          # API Node.js/Express
-├── frontend/         # Aplicação React/TypeScript
-└── README.md         # Este arquivo
-```
+### Core Features
+- **Controle de Gastos**: Registro e categorização de despesas
+- **Dashboard Interativo**: Visualização de dados com gráficos e estatísticas
+- **Sistema Multiusuário**: Cada usuário tem seus próprios dados isolados
+- **Integração WhatsApp**: Recebimento de gastos via mensagens do WhatsApp
+- **Categorização Inteligente**: Categorias personalizáveis por usuário
+- **Relatórios**: Análises detalhadas de gastos por período
+
+### Sistema de Usuários
+- **Registro e Login**: Sistema completo de autenticação
+- **Perfis Personalizáveis**: Dados pessoais e configurações
+- **Planos de Assinatura**: Sistema preparado para diferentes planos
+- **Configurações**: Tema, moeda, notificações e alertas
+
+### Integração WhatsApp
+- **Recebimento Automático**: Gastos enviados via WhatsApp são registrados automaticamente
+- **Resposta Inteligente**: Confirmação automática com categoria detectada
+- **Processamento via n8n**: Workflow automatizado para processamento de mensagens
+
+## 🛠️ Tecnologias
+
+### Backend
+- **Node.js** com Express
+- **PostgreSQL** para banco de dados
+- **JWT** para autenticação
+- **bcryptjs** para hash de senhas
+- **CORS** configurado
+
+### Frontend
+- **React** com TypeScript
+- **Vite** como bundler
+- **Tailwind CSS** para estilização
+- **Shadcn/ui** para componentes
+- **React Router** para navegação
+- **Zustand** para gerenciamento de estado
+- **React Hook Form** com Zod para validação
+
+### Integração
+- **n8n** para automação do WhatsApp
+- **API REST** para comunicação
 
 ## 📋 Pré-requisitos
 
-- **Node.js** (versão 18 ou superior)
-- **PostgreSQL** (versão 12 ou superior)
-- **npm** ou **yarn**
+- Node.js 18+ 
+- PostgreSQL 12+
+- npm ou yarn
+- n8n (para integração WhatsApp)
 
-## 🛠️ Instalação e Configuração
+## 🚀 Instalação
 
-### 1. Backend
+### 1. Clone o repositório
+```bash
+git clone <url-do-repositorio>
+cd controlaZapIa
+```
+
+### 2. Configurar Backend
 
 ```bash
 cd backend
-
-# Instalar dependências
 npm install
-
-# Configurar variáveis de ambiente
-cp env.example .env
-# Edite o arquivo .env com suas configurações de banco
 ```
 
-**Configuração do arquivo `.env`:**
+Crie um arquivo `.env` baseado no `.env.example`:
 ```env
-# Configurações do Banco de Dados PostgreSQL
+# Database
 DB_HOST=localhost
 DB_PORT=5432
 DB_NAME=controlazap
 DB_USER=seu_usuario
 DB_PASSWORD=sua_senha
 
-# Configurações do Servidor
-PORT=3000
-
-# Configurações de JWT (se implementar autenticação)
-JWT_SECRET=seu_jwt_secret_aqui
+# JWT
+JWT_SECRET=sua_chave_secreta_muito_segura
 JWT_EXPIRES_IN=24h
+
+# Server
+PORT=3000
+NODE_ENV=development
+
+# Frontend URL (para CORS)
+FRONTEND_URL=http://localhost:5173
 ```
 
-**Configurar banco de dados:**
+### 3. Configurar Banco de Dados
+
+Execute o script SQL para criar as tabelas:
 ```bash
-# Conecte ao PostgreSQL e execute:
 psql -U seu_usuario -d controlazap -f database.sql
 ```
 
-**Iniciar o servidor:**
-```bash
-npm run dev
-```
-
-O backend estará rodando em `http://localhost:3000`
-
-### 2. Frontend
+### 4. Configurar Frontend
 
 ```bash
 cd frontend
-
-# Instalar dependências
 npm install
-
-# Configurar variáveis de ambiente (opcional)
-# Crie um arquivo .env.local se necessário
 ```
 
-**Iniciar a aplicação:**
+Crie um arquivo `.env`:
+```env
+VITE_API_URL=http://localhost:3000
+```
+
+### 5. Executar o Projeto
+
+**Backend:**
 ```bash
+cd backend
 npm run dev
 ```
 
-O frontend estará rodando em `http://localhost:5173`
+**Frontend:**
+```bash
+cd frontend
+npm run dev
+```
 
-## 🗄️ Banco de Dados
+## 📱 Uso
 
-### Tabela `gastos`
+### 1. Primeiro Acesso
+- Acesse `http://localhost:5173`
+- Clique em "Criar conta" para registrar um novo usuário
+- Faça login com suas credenciais
 
-| Campo      | Tipo         | Descrição                    |
-|------------|--------------|------------------------------|
-| id         | SERIAL       | Identificador único          |
-| valor      | DECIMAL(10,2)| Valor do gasto               |
-| categoria  | VARCHAR(100) | Categoria do gasto           |
-| data       | DATE         | Data do gasto                |
-| criado_em  | TIMESTAMP    | Data/hora de criação         |
+### 2. Dashboard
+- Visualize seus gastos em tempo real
+- Use os filtros para analisar períodos específicos
+- Veja gráficos de distribuição por categoria
 
-### Scripts SQL
+### 3. Configurações
+- Acesse "Configurações" no menu lateral
+- Personalize seu perfil
+- Configure preferências do sistema
+- Altere sua senha
 
-Execute o arquivo `backend/database.sql` para criar a estrutura do banco.
+### 4. Integração WhatsApp
+- Configure o n8n para receber mensagens do WhatsApp
+- Envie gastos no formato: "50 mercado" ou "R$ 50 mercado"
+- O sistema processará automaticamente e responderá com confirmação
 
-## 🔧 Funcionalidades
+## 🔧 Configuração n8n
 
-### Backend
-- ✅ API RESTful para gestão de gastos
-- ✅ Validação de dados
-- ✅ Tratamento de erros padronizado
-- ✅ Filtros por categoria, data e ordenação
-- ✅ Resumo por categoria
-- ✅ CORS configurado
-- ✅ Logging de requisições
+### Workflow WhatsApp
+1. Configure um webhook no n8n
+2. Conecte com a API do WhatsApp Business
+3. Processe as mensagens recebidas
+4. Envie para a API do ControlaZap
+5. Retorne a confirmação para o usuário
 
-### Frontend
-- ✅ Dashboard com resumo financeiro
-- ✅ Tabela de transações com paginação
-- ✅ Filtros por data e categoria
-- ✅ Formulário para criar/editar transações
-- ✅ Gráfico de pizza por categoria
-- ✅ Interface responsiva
-- ✅ Sistema de notificações
-
-## 📡 Endpoints da API
-
-### Gastos
-- `GET /gastos` - Listar gastos com filtros
-- `POST /gastos` - Criar novo gasto
-- `PUT /gastos/:id` - Atualizar gasto
-- `DELETE /gastos/:id` - Excluir gasto
-
-### Resumos
-- `GET /gastos/categorias/resumo` - Resumo por categoria
-- `GET /gastos/categorias/:categoria` - Gastos de uma categoria específica
-
-### Health Check
-- `GET /health` - Status da aplicação
-
-## 🚨 Tratamento de Erros
-
-A API retorna respostas padronizadas:
-
-**Sucesso:**
+### Exemplo de Payload
 ```json
 {
-  "success": true,
-  "data": [...],
-  "message": "Operação realizada com sucesso"
+  "valor": 50.00,
+  "categoria": "mercado",
+  "data": "2024-01-15",
+  "usuario_id": 1
 }
 ```
 
-**Erro:**
-```json
-{
-  "success": false,
-  "error": "Tipo do erro",
-  "message": "Descrição detalhada"
-}
+## 🏗️ Estrutura do Projeto
+
+```
+controlaZapIa/
+├── backend/
+│   ├── src/
+│   │   ├── config/
+│   │   │   └── db.js
+│   │   ├── controllers/
+│   │   │   └── gastos.controller.js
+│   │   ├── middleware/
+│   │   │   └── auth.js
+│   │   ├── models/
+│   │   │   ├── gastos.model.js
+│   │   │   └── usuarios.model.js
+│   │   ├── routes/
+│   │   │   ├── auth.routes.js
+│   │   │   ├── gastos.routes.js
+│   │   │   └── usuarios.routes.js
+│   │   └── app.js
+│   ├── database.sql
+│   └── package.json
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── services/
+│   │   ├── stores/
+│   │   └── App.tsx
+│   └── package.json
+└── README.md
 ```
 
 ## 🔒 Segurança
 
-- Validação de entrada em todos os endpoints
-- Sanitização de parâmetros SQL
-- CORS configurado para desenvolvimento
-- Tratamento de erros sem exposição de informações sensíveis
+- **Autenticação JWT**: Tokens seguros com expiração
+- **Hash de Senhas**: bcryptjs para proteção de senhas
+- **Isolamento de Dados**: Cada usuário acessa apenas seus dados
+- **Validação de Entrada**: Validação rigorosa de todos os dados
+- **CORS Configurado**: Proteção contra requisições não autorizadas
 
-## 🧪 Testando a API
+## 📊 Banco de Dados
 
-### Exemplo de criação de gasto:
+### Tabelas Principais
+- **usuarios**: Dados dos usuários
+- **gastos**: Transações financeiras
+- **categorias_usuarios**: Categorias personalizadas
+- **configuracoes_usuarios**: Preferências do usuário
+
+### Relacionamentos
+- Cada gasto pertence a um usuário
+- Categorias são específicas por usuário
+- Configurações são personalizadas
+
+## 🚀 Deploy
+
+### Backend (Produção)
 ```bash
-curl -X POST http://localhost:3000/gastos \
-  -H "Content-Type: application/json" \
-  -d '{
-    "valor": 25.50,
-    "categoria": "alimentação",
-    "data": "2024-01-20"
-  }'
+# Build
+npm run build
+
+# Start
+npm start
 ```
 
-### Exemplo de listagem:
+### Frontend (Produção)
 ```bash
-curl "http://localhost:3000/gastos?categoria=alimentação&sort=valor_desc"
+# Build
+npm run build
+
+# Servir arquivos estáticos
+npm run preview
 ```
 
-## 🐛 Solução de Problemas
+## 🔮 Próximas Funcionalidades
 
-### Backend não conecta ao banco
-- Verifique se o PostgreSQL está rodando
-- Confirme as credenciais no arquivo `.env`
-- Teste a conexão: `psql -h localhost -U seu_usuario -d controlazap`
+- [ ] Sistema de planos e assinaturas
+- [ ] Relatórios avançados (PDF/Excel)
+- [ ] Integração com bancos
+- [ ] Notificações push
+- [ ] App mobile
+- [ ] Dashboard administrativo
+- [ ] API para terceiros
 
-### Frontend não carrega dados
-- Verifique se o backend está rodando na porta 3000
-- Confirme se a URL da API está correta
-- Verifique o console do navegador para erros
+## 🤝 Contribuição
 
-### Erros de CORS
-- Confirme se a URL do frontend está configurada no backend
-- Verifique se o middleware CORS está ativo
-
-## 📝 Logs
-
-O backend registra todas as requisições e erros no console:
-```
-2024-01-20T10:30:00.000Z - GET /gastos
-2024-01-20T10:30:01.000Z - POST /gastos
-```
-
-## 🔮 Próximos Passos
-
-- [ ] Implementar autenticação JWT
-- [ ] Adicionar sistema de usuários
-- [ ] Implementar receitas (entradas)
-- [ ] Adicionar relatórios avançados
-- [ ] Sistema de metas financeiras
-- [ ] Notificações por email/SMS
-
-## 📞 Suporte
-
-Para dúvidas ou problemas:
-1. Verifique os logs do console
-2. Confirme a configuração do banco de dados
-3. Teste os endpoints individualmente
-4. Verifique se todas as dependências estão instaladas
+1. Fork o projeto
+2. Crie uma branch para sua feature
+3. Commit suas mudanças
+4. Push para a branch
+5. Abra um Pull Request
 
 ## 📄 Licença
 
-Este projeto é de uso interno para controle financeiro.
+Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalhes.
+
+## 📞 Suporte
+
+Para suporte, entre em contato através do email ou abra uma issue no repositório.
+
+---
+
+**ControlaZap** - Transformando o controle financeiro em uma experiência simples e integrada! 💰📱
